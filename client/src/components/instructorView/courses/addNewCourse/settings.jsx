@@ -12,9 +12,7 @@ function Settings() {
       <CardContent>
         <div className=" flex flex-col gap-3">
           <Label>Upload Course Image</Label>
-          <Input
-          // type={}
-          />
+          <Input type="file" accept="image/*" />
         </div>
       </CardContent>
     </Card>

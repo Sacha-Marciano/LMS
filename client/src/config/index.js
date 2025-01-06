@@ -161,3 +161,12 @@ export const courseLandingPageInitialFormData = {
   objectives: "",
   welcomeMessage: "",
 };
+
+export const courseCurriculumInitialFormData = [
+  {
+    title: "",
+    videoUrl: "",
+    freePreview: false,
+    public_id: "",
+  },
+];
