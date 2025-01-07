@@ -32,7 +32,7 @@ function InstructorDashboardPage() {
   const { resetCredentials } = useContext(AuthContext);
 
   // Hooks
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState("courses");
   // Methods
   const handleLogout = () => {
     resetCredentials();
