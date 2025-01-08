@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import VideoPlayer from "@/components/videoPlayer";
+import { courseCurriculumInitialFormData } from "@/config";
 import { InstructorContext } from "@/context/instructor-context";
 import { mediaUploadService } from "@/services";
 import React, { useContext } from "react";
@@ -22,7 +23,7 @@ function Curriculum() {
   const handleNewLecture = () => {
     setCourseCurriculumFormData([
       ...courseCurriculumFormData,
-      { ...courseCurriculumFormData[0] },
+      { ...courseCurriculumInitialFormData },
     ]);
   };
 
@@ -118,8 +119,12 @@ function Curriculum() {
                 </div>
                 <div className="mt-6">
                   {courseCurriculumFormData[index]?.videoUrl ? (
-                    <div className="flex gap-3">
-                      <VideoPlayer />
+                    <div className="lg:flex gap-3">
+                      <VideoPlayer
+                        url={courseCurriculumFormData[index]?.videoUrl}
+                        width="450px"
+                        height="250px"
+                      />
                       <Button>Replace video</Button>
                       <Button className="bg-red-900">Delete lecture</Button>
                     </div>
