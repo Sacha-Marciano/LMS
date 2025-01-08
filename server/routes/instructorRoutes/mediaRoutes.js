@@ -26,7 +26,7 @@ router.delete("/delete/:id", async (req, res) => {
     await deleteMedia(id);
     res
       .status(200)
-      .json({ success: false, message: "Item deleted successfully" });
+      .json({ success: true, message: "Item deleted successfully" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ success: false, message: "Error deleting file" });

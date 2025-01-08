@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 
 const authRoutes = require("./routes/authRoutes/index");
 const mediaRoutes = require("./routes/instructorRoutes/mediaRoutes");
+const instructorCourseRoutes = require("./routes/instructorRoutes/courseRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -32,6 +33,8 @@ mongoose
 // Routes configuration
 app.use("/auth", authRoutes);
 app.use("/media", mediaRoutes);
+app.use("/instructor/course", instructorCourseRoutes);
+
 // Server start
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

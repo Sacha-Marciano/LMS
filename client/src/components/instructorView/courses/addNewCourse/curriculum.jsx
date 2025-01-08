@@ -7,7 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import VideoPlayer from "@/components/videoPlayer";
 import { courseCurriculumInitialFormData } from "@/config";
 import { InstructorContext } from "@/context/instructor-context";
-import { mediaUploadService } from "@/services";
+import { mediaDeleteService, mediaUploadService } from "@/services";
 import React, { useContext } from "react";
 
 function Curriculum() {
@@ -23,7 +23,7 @@ function Curriculum() {
   const handleNewLecture = () => {
     setCourseCurriculumFormData([
       ...courseCurriculumFormData,
-      { ...courseCurriculumInitialFormData },
+      { ...courseCurriculumInitialFormData[0] },
     ]);
   };
 
@@ -75,13 +75,49 @@ function Curriculum() {
     }
   }
 
+  async function handleReplaceLecture(currentIndex) {
+    let copyCourseCurriculumFormData = [...courseCurriculumFormData];
+    const currentVideoPublicId =
+      copyCourseCurriculumFormData[currentIndex].public_id;
+
+    const deleteLectureResponse = await mediaDeleteService(
+      currentVideoPublicId
+    );
+
+    if (deleteLectureResponse?.success) {
+      copyCourseCurriculumFormData[currentIndex] = {
+        ...copyCourseCurriculumFormData[currentIndex],
+        videoUrl: "",
+        public_id: "",
+      };
+
+      setCourseCurriculumFormData(copyCourseCurriculumFormData);
+    }
+  }
+
+  const isCurriculumFormDataValid = () => {
+    return courseCurriculumFormData.every((item) => {
+      return (
+        item &&
+        typeof item === "object" &&
+        item.title.trim() !== "" &&
+        item.videoUrl.trim() !== ""
+      );
+    });
+  };
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Create Course Curriculum</CardTitle>
       </CardHeader>
       <CardContent>
-        <Button onClick={handleNewLecture}>Add Lecture</Button>
+        <Button
+          disabled={!isCurriculumFormDataValid() || mediaUploadProgress}
+          onClick={handleNewLecture}
+        >
+          Add Lecture
+        </Button>
         {mediaUploadProgress ? (
           <div className="w-full bg-gray-200 rounded-md p-5 mt-5 mb-5 relative overflow-hidden">
             <h2>Uploading video</h2>
@@ -125,7 +161,9 @@ function Curriculum() {
                         width="450px"
                         height="250px"
                       />
-                      <Button>Replace video</Button>
+                      <Button onClick={() => handleReplaceLecture(index)}>
+                        Replace video
+                      </Button>
                       <Button className="bg-red-900">Delete lecture</Button>
                     </div>
                   ) : (
