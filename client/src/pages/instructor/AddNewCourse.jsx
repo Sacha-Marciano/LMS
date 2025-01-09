@@ -1,24 +1,42 @@
+// Add new course page - used also to edit courses
+
+//React methods
+import React, { useContext, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
+// Contexts
+import { AuthContext } from "@/context/auth-context";
+import { InstructorContext } from "@/context/instructor-context";
+
+//Components
 import Curriculum from "@/components/instructorView/courses/addNewCourse/curriculum";
 import LandingPage from "@/components/instructorView/courses/addNewCourse/landingPage";
 import Settings from "@/components/instructorView/courses/addNewCourse/settings";
+
+// Third-party librairies UI components
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  courseCurriculumInitialFormData,
-  courseLandingPageInitialFormData,
-} from "@/config";
-import { AuthContext } from "@/context/auth-context";
-import { InstructorContext } from "@/context/instructor-context";
+
+// API services
 import {
   addNewCourseService,
   fetchInstructorCourseDetailService,
   updateInstructorCourseService,
 } from "@/services";
-import React, { useContext, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+
+// Initial form data template to display
+import {
+  courseCurriculumInitialFormData,
+  courseLandingPageInitialFormData,
+} from "@/config";
 
 function AddNewCoursePage() {
+  // Hooks
+  const navigate = useNavigate();
+  const params = useParams();
+
+  // Context subscription
   const {
     courseLandingFormData,
     courseCurriculumFormData,
@@ -27,12 +45,10 @@ function AddNewCoursePage() {
     currentEditedCourse,
     setCurrentEditedCourse,
   } = useContext(InstructorContext);
-
   const { auth } = useContext(AuthContext);
 
-  const navigate = useNavigate();
-  const params = useParams();
-
+  // Methods
+  // Checks the value is empty
   const isEmpty = (value) => {
     if (Array.isArray(value)) {
       return value.length === 0;
@@ -41,7 +57,9 @@ function AddNewCoursePage() {
     return value === "" || value === null || value === undefined;
   };
 
+  // Validate all form data is complete
   const validateFormData = () => {
+    // Checking no values are empty
     for (const key in courseLandingFormData) {
       if (isEmpty(courseLandingFormData[key])) {
         return false;
@@ -51,6 +69,7 @@ function AddNewCoursePage() {
     let hasFreePreview = false;
 
     for (const item of courseCurriculumFormData) {
+      // checking lectures data is complete
       if (
         isEmpty(item.title) ||
         isEmpty(item.videoUrl) ||
@@ -58,33 +77,39 @@ function AddNewCoursePage() {
       ) {
         return false;
       }
+      // Checking if at least one lecture with free preview
       if (item.freePreview) {
-        hasFreePreview = true; // Found at least one lecture with free preview
+        hasFreePreview = true;
       }
     }
 
     return hasFreePreview;
   };
 
+  // Creates a complete course object and uses API services
   const handleCreateCourse = async () => {
     const courseTotalFormData = {
-      instructorId: auth?.user?._id,
-      instructorName: auth?.user?.userName,
+      instructorId: auth?.user?._id, // Provided by context
+      instructorName: auth?.user?.userName, // Provided by context
       date: new Date(),
-      ...courseLandingFormData,
+      ...courseLandingFormData, // Provided by state
       students: [],
-      curriculum: courseCurriculumFormData,
+      curriculum: courseCurriculumFormData, // Provided by state
       isPublished: true,
     };
 
+    // Checking what to display (create/edit)
     const response =
+      // if not editing - update the course by ID
       currentEditedCourse !== null
         ? await updateInstructorCourseService(
             currentEditedCourse,
             courseTotalFormData
           )
-        : await addNewCourseService(courseTotalFormData);
+        : // if not editing - add the course
+          await addNewCourseService(courseTotalFormData);
 
+    // if response is successfull, reset id of edited and  all inputs with initial templates
     if (response?.success) {
       setCourseCurriculumFormData(courseCurriculumInitialFormData);
       setCourseLandingFormData(courseLandingPageInitialFormData);
@@ -93,6 +118,7 @@ function AddNewCoursePage() {
     }
   };
 
+  // Get course details by ID
   const fetchCurrentCourseDetails = async () => {
     const response = await fetchInstructorCourseDetailService(
       currentEditedCourse
@@ -113,12 +139,14 @@ function AddNewCoursePage() {
     }
   };
 
+  // If the ID state is changed, fetch new course id details
   useEffect(() => {
     if (currentEditedCourse !== null) {
       fetchCurrentCourseDetails();
     }
   }, [currentEditedCourse]);
 
+  // If the params of course ID exists, set the new ID state
   useEffect(() => {
     if (params?.courseId) {
       setCurrentEditedCourse(params?.courseId);

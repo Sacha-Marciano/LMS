@@ -1,4 +1,18 @@
+// Login/Signup page
+
+//React methods
+import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+
+// Contexts
+import { AuthContext } from "@/context/auth-context";
+
+//Components
 import CommonForm from "@/components/commonForm";
+
+// Third-party librairies UI components
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { GraduationCap } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -6,14 +20,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+// Initial data to control forms inputs to display
 import { signUpFormControls, signInFormControls } from "@/config";
-import { AuthContext } from "@/context/auth-context";
-import { GraduationCap } from "lucide-react";
-import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
 
 const AuthPage = () => {
+  // Hooks
+  const [activeTab, setActiveTab] = useState("signin");
+
+  // Context subscription
   const {
     signInFormData,
     setSignInFormData,
@@ -22,8 +37,8 @@ const AuthPage = () => {
     handleRegisterUser,
     handleLoginUser,
   } = useContext(AuthContext);
-  const [activeTab, setActiveTab] = useState("signin");
 
+  // Methods
   const handleTabChange = (value) => {
     setActiveTab(value);
   };

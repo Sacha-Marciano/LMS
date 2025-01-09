@@ -1,3 +1,6 @@
+// This is the student homepage, it displays all available courses from the db
+// Student can navigate from here to all students available pages
+
 import { useContext } from "react";
 import { AuthContext } from "@/context/auth-context";
 import { Button } from "@/components/ui/button";

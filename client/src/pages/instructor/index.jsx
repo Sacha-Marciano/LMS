@@ -1,12 +1,24 @@
-import InstructorCourses from "@/components/instructorView/courses";
-import InstructorDashboard from "@/components/instructorView/dashboard";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
+// This is the instructor homepage, it displays all available actions to the instructor
+// Instructors can navigate from here to all admin available pages
+
+//React methods
+import { useContext, useEffect, useState } from "react";
+
+// Contexts
 import { AuthContext } from "@/context/auth-context";
 import { InstructorContext } from "@/context/instructor-context";
-import { fetchInstructorCourseListService } from "@/services";
+
+//Components
+import InstructorCourses from "@/components/instructorView/courses";
+import InstructorDashboard from "@/components/instructorView/dashboard";
+
+// Third-party librairies UI components
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { BarChart, Book, LogOut } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+
+// API services
+import { fetchInstructorCourseListService } from "@/services";
 
 function InstructorDashboardPage() {
   // Context suscribe
