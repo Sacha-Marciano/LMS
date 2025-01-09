@@ -9,19 +9,37 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  courseCurriculumInitialFormData,
+  courseLandingPageInitialFormData,
+} from "@/config";
+import { InstructorContext } from "@/context/instructor-context";
 import { Delete, Edit } from "lucide-react";
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 function InstructorCourses({ coursesList }) {
   const navigate = useNavigate();
+  const {
+    setCurrentEditedCourse,
+    setCourseLandingFormData,
+    setCourseCurriculumFormData,
+  } = useContext(InstructorContext);
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row items-center">
         <CardTitle className="text-3xl font-extrabold">All Courses</CardTitle>
         <Button
           className="p-6"
-          onClick={() => navigate("/instructor/create-course")}
+          onClick={() => {
+            // First reset the state to prevent useless redirecting to editing
+            setCurrentEditedCourse(null);
+            // Then reset page form state to prevent useless data upload
+            setCourseLandingFormData(courseLandingPageInitialFormData);
+            setCourseCurriculumFormData(courseCurriculumInitialFormData);
+            // Then navigate to page
+            navigate("/instructor/create-course");
+          }}
         >
           Create New Course
         </Button>
@@ -50,7 +68,13 @@ function InstructorCourses({ coursesList }) {
                           {item?.pricing * item?.students.length}
                         </TableCell>
                         <TableCell className="text-right">
-                          <Button variant="ghost" size="sm">
+                          <Button
+                            onClick={() => {
+                              navigate(`/instructor/edit-course/${item?._id}`);
+                            }}
+                            variant="ghost"
+                            size="sm"
+                          >
                             <Edit className="h-6 w-6" />
                           </Button>
                           <Button variant="ghost" size="sm">

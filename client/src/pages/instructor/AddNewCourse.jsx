@@ -10,9 +10,13 @@ import {
 } from "@/config";
 import { AuthContext } from "@/context/auth-context";
 import { InstructorContext } from "@/context/instructor-context";
-import { addNewCourseService } from "@/services";
-import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import {
+  addNewCourseService,
+  fetchInstructorCourseDetailService,
+  updateInstructorCourseService,
+} from "@/services";
+import React, { useContext, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 function AddNewCoursePage() {
   const {
@@ -20,11 +24,14 @@ function AddNewCoursePage() {
     courseCurriculumFormData,
     setCourseLandingFormData,
     setCourseCurriculumFormData,
+    currentEditedCourse,
+    setCurrentEditedCourse,
   } = useContext(InstructorContext);
 
   const { auth } = useContext(AuthContext);
 
   const navigate = useNavigate();
+  const params = useParams();
 
   const isEmpty = (value) => {
     if (Array.isArray(value)) {
@@ -70,14 +77,53 @@ function AddNewCoursePage() {
       isPublished: true,
     };
 
-    const response = await addNewCourseService(courseTotalFormData);
+    const response =
+      currentEditedCourse !== null
+        ? await updateInstructorCourseService(
+            currentEditedCourse,
+            courseTotalFormData
+          )
+        : await addNewCourseService(courseTotalFormData);
 
     if (response?.success) {
       setCourseCurriculumFormData(courseCurriculumInitialFormData);
       setCourseLandingFormData(courseLandingPageInitialFormData);
       navigate(-1);
+      setCurrentEditedCourse(null);
     }
   };
+
+  const fetchCurrentCourseDetails = async () => {
+    const response = await fetchInstructorCourseDetailService(
+      currentEditedCourse
+    );
+
+    if (response?.success) {
+      // Create an object with the same keys as the object in the config
+      const getCourseFormData = Object.keys(
+        courseLandingPageInitialFormData
+      ).reduce((acc, key) => {
+        // then select first key and push the received response, save it in acc and do it again for all keys
+        acc[key] = response.data[key] || courseLandingPageInitialFormData[key];
+        return acc;
+      }, {});
+
+      setCourseLandingFormData(getCourseFormData);
+      setCourseCurriculumFormData(response?.data?.curriculum);
+    }
+  };
+
+  useEffect(() => {
+    if (currentEditedCourse !== null) {
+      fetchCurrentCourseDetails();
+    }
+  }, [currentEditedCourse]);
+
+  useEffect(() => {
+    if (params?.courseId) {
+      setCurrentEditedCourse(params?.courseId);
+    }
+  }, [params?.courseId]);
 
   return (
     <div className="container mx-auto p-4">
