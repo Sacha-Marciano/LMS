@@ -26,4 +26,4 @@ dist-ssr
 
 
 .env
-uploads
+server/uploads/*.*
