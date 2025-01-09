@@ -2,7 +2,7 @@
 // Add lectures to course, at least one must bee free preview
 
 //React methods
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 
 // Contexts
 import { InstructorContext } from "@/context/instructor-context";
@@ -22,9 +22,17 @@ import { Switch } from "@/components/ui/switch";
 import { courseCurriculumInitialFormData } from "@/config";
 
 // API services
-import { mediaDeleteService, mediaUploadService } from "@/services";
+import {
+  bulkUploadService,
+  mediaDeleteService,
+  mediaUploadService,
+} from "@/services";
+import { Upload } from "lucide-react";
 
 function Curriculum() {
+  // Hooks
+  const bulkUploadRef = useRef(null);
+  // Context subscription
   const {
     courseCurriculumFormData,
     setCourseCurriculumFormData,
@@ -120,10 +128,100 @@ function Curriculum() {
     });
   };
 
+  const handleOpenBulkUpload = () => {
+    bulkUploadRef.current?.click();
+  };
+
+  const isReceivedDataEmpty = (arr) => {
+    return arr.every((obj) => {
+      return Object.entries(obj).every(([key, value]) => {
+        if (typeof value === "boolean") {
+          return true;
+        }
+        return value === "";
+      });
+    });
+  };
+
+  const handleBulkUpload = async (evt) => {
+    const selectedFiles = Array.from(evt.target.files);
+    const bulkFormData = new FormData();
+
+    selectedFiles.forEach((file) => {
+      bulkFormData.append("files", file);
+    });
+
+    try {
+      setMediaUploadProgress(true);
+      const response = await bulkUploadService(
+        bulkFormData,
+        setMediaUploadProgressPercent
+      );
+      if (response?.success) {
+        let copyCourseCurriculumFormData = isReceivedDataEmpty(
+          courseCurriculumFormData
+        )
+          ? []
+          : [...courseCurriculumFormData];
+
+        copyCourseCurriculumFormData = [
+          ...copyCourseCurriculumFormData,
+          ...response?.data.map((item, index) => ({
+            videoUrl: item?.url,
+            public_id: item?.public_id,
+            title: `Lecture ${copyCourseCurriculumFormData.length + index + 1}`,
+            freePreview: false,
+          })),
+        ];
+        setCourseCurriculumFormData(copyCourseCurriculumFormData);
+        setMediaUploadProgress(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDeleteLecture = async (currentIndex) => {
+    let copyCourseCurriculumFormData = courseCurriculumFormData;
+    const getVideoToDelete =
+      copyCourseCurriculumFormData[currentIndex].public_id;
+
+    const response = await mediaDeleteService(getVideoToDelete);
+
+    if (response.success) {
+      copyCourseCurriculumFormData = copyCourseCurriculumFormData.filter(
+        (_, index) => index !== currentIndex
+      );
+
+      setCourseCurriculumFormData(copyCourseCurriculumFormData);
+    }
+  };
+
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-row justify-between">
         <CardTitle>Create Course Curriculum</CardTitle>
+        <div>
+          <Input
+            type="file"
+            ref={bulkUploadRef}
+            accept="video/*"
+            multiple
+            className="hidden"
+            id="bulk-media-upload"
+            onChange={handleBulkUpload}
+          />
+          <Button
+            as="label"
+            htmlFor="bulk-media-upload"
+            variant="outline"
+            className="cursor-pointer"
+            onClick={handleOpenBulkUpload}
+          >
+            <Upload className="w-4 h-5 mr-2" />
+            Bulk Upload
+          </Button>
+        </div>
       </CardHeader>
       <CardContent>
         <Button
@@ -178,7 +276,12 @@ function Curriculum() {
                       <Button onClick={() => handleReplaceLecture(index)}>
                         Replace video
                       </Button>
-                      <Button className="bg-red-900">Delete lecture</Button>
+                      <Button
+                        onClick={() => handleDeleteLecture(index)}
+                        className="bg-red-900"
+                      >
+                        Delete lecture
+                      </Button>
                     </div>
                   ) : (
                     <Input

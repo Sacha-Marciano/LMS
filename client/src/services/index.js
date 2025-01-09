@@ -41,6 +41,22 @@ export async function mediaUploadService(formData, onProgress) {
   return data;
 }
 
+// Bulk uploads media to server
+export async function bulkUploadService(formData, onProgress) {
+  const { data } = await axiosInstance.post("/media/bulk-upload", formData, {
+    // define a function to be used during uploading
+    onUploadProgress: (progressEvent) => {
+      const percentCompleted = Math.round(
+        (progressEvent.loaded * 100) / progressEvent.total
+      );
+      // return the result of the uploading function during uploading to be displayed to UI
+      onProgress(percentCompleted);
+    },
+  });
+
+  return data;
+}
+
 // Delete media from cloudinary by ID
 export async function mediaDeleteService(id) {
   const { data } = await axiosInstance.delete(`/media/delete/${id}`);
