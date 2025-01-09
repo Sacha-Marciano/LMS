@@ -1,25 +1,37 @@
+// This components shows all courses according to instructor ID
+// It also provides a create course option
+
+// React methods
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
+// Contexts
+import { InstructorContext } from "@/context/instructor-context";
+
+// Third-party UI components
+import { Delete, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
+// Config for forms
 import {
   courseCurriculumInitialFormData,
   courseLandingPageInitialFormData,
 } from "@/config";
-import { InstructorContext } from "@/context/instructor-context";
-import { Delete, Edit } from "lucide-react";
-import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 
 function InstructorCourses({ coursesList }) {
+  // Hooks
   const navigate = useNavigate();
+
+  //Context subscription
   const {
     setCurrentEditedCourse,
     setCourseLandingFormData,

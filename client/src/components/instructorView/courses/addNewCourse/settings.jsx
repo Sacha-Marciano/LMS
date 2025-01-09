@@ -1,12 +1,30 @@
+// Course settings
+// This page can be customized at will
+// Current settings :
+// Course main image
+//
+
+// TODO: button to replace image like videos in curriculum
+
+//React methods
+import React, { useContext } from "react";
+
+// Contexts
+import { InstructorContext } from "@/context/instructor-context";
+
+// Components
 import MediaProgressBar from "@/components/mediaProgressBar";
+
+// Third-party UI components
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { InstructorContext } from "@/context/instructor-context";
+
+// API services
 import { mediaUploadService } from "@/services";
-import React, { useContext } from "react";
 
 function Settings() {
+  // Context subscription
   const {
     courseLandingFormData,
     setCourseLandingFormData,
@@ -15,6 +33,8 @@ function Settings() {
     mediaUploadProgressPercent,
     setMediaUploadProgressPercent,
   } = useContext(InstructorContext);
+
+  // Methods
   async function handleImageUpload(evt) {
     const selectedImage = evt.target.files[0];
 

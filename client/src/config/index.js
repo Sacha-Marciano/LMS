@@ -1,3 +1,7 @@
+// This config file contains the structure for all
+// forms data, controls and inputs
+
+// Defines every input of the sign up form
 export const signUpFormControls = [
   {
     name: "userName",
@@ -22,6 +26,7 @@ export const signUpFormControls = [
   },
 ];
 
+// Defines every input of the login form
 export const signInFormControls = [
   {
     name: "userEmail",
@@ -39,17 +44,20 @@ export const signInFormControls = [
   },
 ];
 
-export const initialSignInFormData = {
-  userEmail: "",
-  password: "",
-};
-
+// Object to fill the signup form at first
 export const initialSignUpFormData = {
   userName: "",
   userEmail: "",
   password: "",
 };
 
+// Object to fill the login form at first
+export const initialSignInFormData = {
+  userEmail: "",
+  password: "",
+};
+
+// Defines the select values to display
 export const languageOptions = [
   { id: "english", label: "English" },
   { id: "spanish", label: "Spanish" },
@@ -63,12 +71,14 @@ export const languageOptions = [
   { id: "russian", label: "Russian" },
 ];
 
+// Defines the select values to display
 export const courseLevelOptions = [
   { id: "beginner", label: "Beginner" },
   { id: "intermediate", label: "Intermediate" },
   { id: "advanced", label: "Advanced" },
 ];
 
+// Defines the select values to display
 export const courseCategories = [
   { id: "web-development", label: "Web Development" },
   { id: "backend-development", label: "Backend Development" },
@@ -82,6 +92,7 @@ export const courseCategories = [
   { id: "software-engineering", label: "Software Engineering" },
 ];
 
+// Defines every input of the add course landing page form
 export const courseLandingPageFormControls = [
   {
     name: "title",
@@ -150,6 +161,7 @@ export const courseLandingPageFormControls = [
   },
 ];
 
+// Object to fill the add course landing page form at first
 export const courseLandingPageInitialFormData = {
   title: "",
   category: "",
@@ -163,6 +175,7 @@ export const courseLandingPageInitialFormData = {
   image: "",
 };
 
+// Object to fill the add course curriculum form at first
 export const courseCurriculumInitialFormData = [
   {
     title: "",

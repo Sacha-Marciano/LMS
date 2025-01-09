@@ -1,3 +1,15 @@
+// This component create a React video player
+// and defines custom controls
+// Note that 90% this page is NOT required
+// You can copy paste the react video player component
+// and add a controls attriubte to get default controls
+
+// React methods
+import React, { useCallback, useEffect, useRef, useState } from "react";
+
+//Third-party UI components
+import { Slider } from "../ui/slider";
+import { Button } from "../ui/button";
 import {
   Maximize,
   Minimize,
@@ -8,10 +20,9 @@ import {
   Volume2,
   VolumeX,
 } from "lucide-react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+
+// React player
 import ReactPlayer from "react-player";
-import { Slider } from "../ui/slider";
-import { Button } from "../ui/button";
 
 function VideoPlayer({ width = "100%", height = "100%", url }) {
   const [playing, setPlaying] = useState(false);
@@ -22,13 +33,12 @@ function VideoPlayer({ width = "100%", height = "100%", url }) {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [showControls, setShowControls] = useState(true);
 
-  //references
+  // references
   const playerRef = useRef(null);
   const playerContainerRef = useRef(null);
   const controlsTimeoutRef = useRef(null);
 
   // methods
-
   const playAndPause = () => {
     setPlaying(!playing);
   };

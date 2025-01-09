@@ -1,8 +1,20 @@
-import FormControls from "@/components/commonForm/formControls";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { courseLandingPageFormControls } from "@/config";
-import { InstructorContext } from "@/context/instructor-context";
+// Course Landing page form
+// For any changes, change the config object courseLandingPageFormControls
+
+// React methods
 import React, { useContext } from "react";
+
+// Contexts
+import { InstructorContext } from "@/context/instructor-context";
+
+// Components
+import FormControls from "@/components/commonForm/formControls";
+
+// Third-party UI components
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+// Config for form inputs
+import { courseLandingPageFormControls } from "@/config";
 
 function LandingPage() {
   const { courseLandingFormData, setCourseLandingFormData } =

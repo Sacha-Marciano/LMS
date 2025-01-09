@@ -1,12 +1,20 @@
+// This context provider ensure critical instructor related data
+// is passed to all components without drilling
+
+// React methods
+import { createContext, useState } from "react";
+
+// Config data for courses forms
 import {
   courseCurriculumInitialFormData,
   courseLandingPageInitialFormData,
 } from "@/config";
-import { createContext, useState } from "react";
 
+// Create context
 export const InstructorContext = createContext(null);
 
 export default function InstructorProvider({ children }) {
+  // Hooks
   const [courseLandingFormData, setCourseLandingFormData] = useState(
     courseLandingPageInitialFormData
   );
@@ -20,6 +28,8 @@ export default function InstructorProvider({ children }) {
 
   const [instructorCourseList, setInstructorCourseList] = useState([]);
   const [currentEditedCourse, setCurrentEditedCourse] = useState(null);
+
+  // Wrap all children of this components in a context provider
   return (
     <InstructorContext.Provider
       value={{

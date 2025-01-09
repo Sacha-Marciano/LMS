@@ -1,14 +1,28 @@
+// Course curriculum
+// Add lectures to course, at least one must bee free preview
+
+//React methods
+import React, { useContext } from "react";
+
+// Contexts
+import { InstructorContext } from "@/context/instructor-context";
+
+// Components
 import MediaProgressBar from "@/components/mediaProgressBar";
+import VideoPlayer from "@/components/videoPlayer";
+
+// Third-party UI components
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import VideoPlayer from "@/components/videoPlayer";
+
+// Config for form inputs
 import { courseCurriculumInitialFormData } from "@/config";
-import { InstructorContext } from "@/context/instructor-context";
+
+// API services
 import { mediaDeleteService, mediaUploadService } from "@/services";
-import React, { useContext } from "react";
 
 function Curriculum() {
   const {

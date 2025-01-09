@@ -1,4 +1,9 @@
+// This components uses motion to create a progress bar to be used during uploads
+
+// React methods
 import React, { useEffect, useState } from "react";
+
+// Motion
 import { motion } from "framer-motion";
 
 function MediaProgressBar({ isMediaUploading, progress }) {

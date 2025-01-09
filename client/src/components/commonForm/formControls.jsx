@@ -1,5 +1,11 @@
+// You can use directly form controls instead of common form
+// See comments in commonForm/index for explanation
+// If using only formControls, a submit button must be created separately
+
+// Third-party UI components
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
 import {
   Select,
   SelectTrigger,
@@ -7,12 +13,13 @@ import {
   SelectContent,
   SelectItem,
 } from "../ui/select";
-import { Textarea } from "../ui/textarea";
 
 function FormControls({ formControls, formData, setFormData }) {
+  // Renders inputs according to their type
   const renderComponentByType = (item) => {
     let element = null;
     const value = formData[item.name] || "";
+    // Switch depending on input type
     switch (item.componentType) {
       case "input":
         element = (
@@ -92,8 +99,10 @@ function FormControls({ formControls, formData, setFormData }) {
     }
     return element;
   };
+
   return (
     <div className="flex flex-col gap-3">
+      {/*Iterates over form controls props and output wanted inputs*/}
       {formControls.map((controlItem) => {
         return (
           <div key={controlItem.name}>

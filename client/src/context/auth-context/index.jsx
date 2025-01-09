@@ -1,15 +1,27 @@
+// This context provider ensure critical auth related data
+// is passed to all components without drilling
+
+//React methods
+import { createContext, useEffect, useState } from "react";
+
+// Third-party UI components
 import { Skeleton } from "@/components/ui/skeleton";
-import { initialSignInFormData, initialSignUpFormData } from "@/config";
+
+// API services
 import {
   registerService,
   loginService,
   checkAuthService,
 } from "@/services/index";
-import { createContext, useEffect, useState } from "react";
 
+// Config data for courses forms
+import { initialSignInFormData, initialSignUpFormData } from "@/config";
+
+// Create context
 export const AuthContext = createContext(null);
 
 export default function AuthProvider({ children }) {
+  // Hooks
   const [signInFormData, setSignInFormData] = useState(initialSignInFormData);
   const [signUpFormData, setSignUpFormData] = useState(initialSignUpFormData);
   const [auth, setAuth] = useState({
@@ -18,15 +30,25 @@ export default function AuthProvider({ children }) {
   });
   const [loading, setLoading] = useState(true);
 
+  // Methods
+
+  // Register new user
   async function handleRegisterUser(evt) {
     evt.preventDefault();
     const data = await registerService(signUpFormData);
+    // To log in user directly after register:
+    // Change response in server to pass email and password
+    // set Signin form data with response (userEmail and password)
+    // Call handleLoginUser
   }
 
+  // Login user known in db
   async function handleLoginUser(evt) {
     evt.preventDefault();
     const data = await loginService(signInFormData);
 
+    // If credeentials are valid, create a token 
+    // and store it in sessions storage
     if (data.success) {
       sessionStorage.setItem(
         "accessToken",
@@ -76,6 +98,7 @@ export default function AuthProvider({ children }) {
     }
   }
 
+  // Log out 
   function resetCredentials() {
     setAuth({
       authenticate: false,
@@ -83,11 +106,13 @@ export default function AuthProvider({ children }) {
     });
   }
 
+  // When mounting for first time check token 
   useEffect(() => {
     checkAuth();
     setLoading(false);
   }, []);
 
+  // Wrap all children of this components in a context provider
   return (
     <AuthContext.Provider
       value={{

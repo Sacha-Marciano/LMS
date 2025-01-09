@@ -1,3 +1,6 @@
+// Instructor Dashboard showing all instructors stats
+
+//React methods
 import React from "react";
 
 function InstructorDashboard() {
