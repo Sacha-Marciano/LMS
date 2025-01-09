@@ -1,5 +1,6 @@
 const Course = require("../../models/Course");
 
+// Create a new course based on course model and call save to collection function
 const addNewCourse = async (req, res) => {
   try {
     const courseData = req.body;
@@ -19,6 +20,7 @@ const addNewCourse = async (req, res) => {
   }
 };
 
+// Returns all courses collection
 const getAllCourses = async (req, res) => {
   try {
     const coursesList = await Course.find({});
@@ -34,6 +36,7 @@ const getAllCourses = async (req, res) => {
   }
 };
 
+// Return specific course from collection by ID
 const getCourseDetailsById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -56,6 +59,7 @@ const getCourseDetailsById = async (req, res) => {
   }
 };
 
+// Finds a course by its id then replace it entirely by request body
 const updateCourseById = async (req, res) => {
   try {
     const { id } = req.params;

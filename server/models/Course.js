@@ -1,3 +1,7 @@
+// Course model
+// Every change made here require revision of all courses endpoint fetches like:
+// Create, edit and unpublish course in UI and server
+
 const mongoose = require("mongoose");
 
 const LectureSchema = new mongoose.Schema({

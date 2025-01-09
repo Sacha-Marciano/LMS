@@ -1,3 +1,5 @@
+// Authentication routes for login, signup and check user token to keep logged in
+
 const express = require("express");
 const {
   registerUser,

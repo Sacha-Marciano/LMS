@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../../models/User");
 
+// Create a new user based on User model and request body
 const registerUser = async (req, res) => {
   const { userName, userEmail, password, role } = req.body;
 
@@ -33,11 +34,12 @@ const registerUser = async (req, res) => {
   });
 };
 
+// Check request body credentials against users collection in db
 const loginUser = async (req, res) => {
   const { userEmail, password } = req.body;
 
   const checkUser = await User.findOne({ userEmail });
-
+  // Both email and password are checked
   const checkPassword = await bcrypt.compare(password, checkUser.password);
 
   if (!checkUser || !checkPassword) {
@@ -47,6 +49,7 @@ const loginUser = async (req, res) => {
     });
   }
 
+  //If user is found and password match a token is created
   const accessToken = jwt.sign(
     {
       _id: checkUser._id,
@@ -58,6 +61,7 @@ const loginUser = async (req, res) => {
     { expiresIn: "120m" }
   );
 
+  // token is sent with user credentials
   res.status(200).json({
     success: true,
     message: "Logged in successfully",

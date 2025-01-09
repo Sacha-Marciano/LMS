@@ -1,3 +1,5 @@
+// Upload and delete medias to cloudinary account and return the media URL
+
 const express = require("express");
 const multer = require("multer");
 const { uploadMedia, deleteMedia } = require("../../helpers/cloudinary");
@@ -9,6 +11,7 @@ const upload = multer({ dest: "uploads/" });
 router.post("/upload", upload.single("file"), async (req, res) => {
   try {
     const result = await uploadMedia(req.file.path);
+    console.log(result);
     res.status(200).json({ success: true, data: result });
   } catch (err) {
     console.log(err);
@@ -22,8 +25,7 @@ router.delete("/delete/:id", async (req, res) => {
     if (!id) {
       return res.status(400).json({ success: false, message: "ID is needed" });
     }
-
-    await deleteMedia(id);
+    await deleteMedia(String(id));
     res
       .status(200)
       .json({ success: true, message: "Item deleted successfully" });

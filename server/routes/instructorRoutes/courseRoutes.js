@@ -1,3 +1,5 @@
+// All routes available to instructor/admin
+
 const express = require("express");
 const {
   addNewCourse,
