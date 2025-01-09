@@ -25,7 +25,7 @@ const getAllCourses = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Course saved successfully",
+      message: "Courses fetched successfully",
       data: coursesList,
     });
   } catch (err) {

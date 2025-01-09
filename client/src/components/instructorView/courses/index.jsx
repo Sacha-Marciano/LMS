@@ -13,7 +13,7 @@ import { Delete, Edit } from "lucide-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function InstructorCourses() {
+function InstructorCourses({ coursesList }) {
   const navigate = useNavigate();
   return (
     <Card>
@@ -38,21 +38,29 @@ function InstructorCourses() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableCell className="font-medium">
-                  Resume writing course
-                </TableCell>
-                <TableCell>7</TableCell>
-                <TableCell>0</TableCell>
-                <TableCell className="text-right">
-                  <Button variant="ghost" size="sm">
-                    <Edit className="h-6 w-6" />
-                  </Button>
-                  <Button variant="ghost" size="sm">
-                    <Delete className="h-6 w-6" />
-                  </Button>
-                </TableCell>
-              </TableRow>
+              {coursesList && coursesList.length > 0
+                ? coursesList.map((item, index) => {
+                    return (
+                      <TableRow key={index}>
+                        <TableCell className="font-medium">
+                          {item?.title}
+                        </TableCell>
+                        <TableCell>{item?.students.length}</TableCell>
+                        <TableCell>
+                          {item?.pricing * item?.students.length}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Button variant="ghost" size="sm">
+                            <Edit className="h-6 w-6" />
+                          </Button>
+                          <Button variant="ghost" size="sm">
+                            <Delete className="h-6 w-6" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                : null}
             </TableBody>
           </Table>
         </div>

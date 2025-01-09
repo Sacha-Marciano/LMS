@@ -3,10 +3,38 @@ import InstructorDashboard from "@/components/instructorView/dashboard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { AuthContext } from "@/context/auth-context";
+import { InstructorContext } from "@/context/instructor-context";
+import { fetchInstructorCourseListService } from "@/services";
 import { BarChart, Book, LogOut } from "lucide-react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 function InstructorDashboardPage() {
+  // Context suscribe
+  const { resetCredentials } = useContext(AuthContext);
+  const { instructorCourseList, setInstructorCourseList } =
+    useContext(InstructorContext);
+
+  // Hooks
+  const [activeTab, setActiveTab] = useState("dashboard");
+
+  // Methods
+  const handleLogout = () => {
+    resetCredentials();
+    sessionStorage.clear();
+  };
+
+  const fetchAllCourses = async () => {
+    const response = await fetchInstructorCourseListService();
+    if (response?.success) {
+      setInstructorCourseList(response.data);
+    }
+  };
+
+  // When component renders for first time
+  useEffect(() => {
+    fetchAllCourses();
+  }, []);
+
   const menuItems = [
     {
       icon: BarChart,
@@ -18,7 +46,7 @@ function InstructorDashboardPage() {
       icon: Book,
       label: "Courses",
       value: "courses",
-      component: <InstructorCourses />,
+      component: <InstructorCourses coursesList={instructorCourseList} />,
     },
     {
       icon: LogOut,
@@ -28,16 +56,6 @@ function InstructorDashboardPage() {
     },
   ];
 
-  // Auth context susscribe
-  const { resetCredentials } = useContext(AuthContext);
-
-  // Hooks
-  const [activeTab, setActiveTab] = useState("courses");
-  // Methods
-  const handleLogout = () => {
-    resetCredentials();
-    sessionStorage.clear();
-  };
   return (
     <div className="flex h-full min-h-screen bg-gray-100">
       <aside className="w-64 bg-white shadow-md hidden md:block">
