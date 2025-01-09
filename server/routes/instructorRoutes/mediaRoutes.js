@@ -11,7 +11,6 @@ const upload = multer({ dest: "uploads/" });
 router.post("/upload", upload.single("file"), async (req, res) => {
   try {
     const result = await uploadMedia(req.file.path);
-    console.log(result);
     res.status(200).json({ success: true, data: result });
   } catch (err) {
     console.log(err);

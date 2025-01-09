@@ -23,7 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 
-
+# ignore files in upload dir but not the dir itself
+server/upload/*
+!server/upload/.gitkeep
 
 .env
-server/uploads/*.*
+
