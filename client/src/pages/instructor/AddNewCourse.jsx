@@ -1,6 +1,6 @@
 // Add new course page - used also to edit courses
 
-//React methods
+//React
 import React, { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
