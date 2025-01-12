@@ -64,7 +64,7 @@ export async function mediaDeleteService(id) {
   return data;
 }
 
-// Get all courses from instructor list
+// Get all courses from server
 export async function fetchInstructorCourseListService() {
   const { data } = await axiosInstance.get(`/instructor/course/get`);
 
@@ -93,6 +93,20 @@ export async function updateInstructorCourseService(id, formData) {
     `/instructor/course/update/${id}`,
     formData
   );
+
+  return data;
+}
+
+// Get all courses from server
+export async function fetchStudentCourseListService() {
+  const { data } = await axiosInstance.get(`/student/course/get`);
+
+  return data;
+}
+
+// Fetch a specific course details (student view) by ID
+export async function fetchStudentCourseDetailsService(id) {
+  const { data } = await axiosInstance.get(`/student/course/get/details/${id}`);
 
   return data;
 }

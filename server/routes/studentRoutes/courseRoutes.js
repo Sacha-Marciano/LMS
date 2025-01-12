@@ -2,7 +2,7 @@ const express = require("express");
 const {
   getAllStudentCourses,
   getStudentCourseDetails,
-} = require("../../controllers/studentsControllers");
+} = require("../../controllers/studentsControllers/courseController");
 const router = express.Router();
 
 router.get("/get", getAllStudentCourses);

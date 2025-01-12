@@ -14,7 +14,7 @@ export default function StudentProvider({ children }) {
   // Wrap all children of this components in a context provider
   return (
     <StudentContext.Provider
-      value={(studentCoursesList, setStudentCoursesList)}
+      value={{ studentCoursesList, setStudentCoursesList }}
     >
       {children}
     </StudentContext.Provider>
