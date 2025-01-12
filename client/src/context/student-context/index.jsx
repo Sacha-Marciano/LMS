@@ -11,6 +11,8 @@ export default function StudentProvider({ children }) {
   // Hooks
   const [studentCoursesList, setStudentCoursesList] = useState([]);
   const [loadingState, setLoadingState] = useState(true);
+  const [studentCourseDetails, setStudentCourseDetails] = useState(null);
+  const [currentCourseDetailsId, setCurrentCourseDetailsId] = useState(null);
   // Wrap all children of this components in a context provider
   return (
     <StudentContext.Provider
@@ -19,6 +21,10 @@ export default function StudentProvider({ children }) {
         setStudentCoursesList,
         loadingState,
         setLoadingState,
+        studentCourseDetails,
+        setStudentCourseDetails,
+        currentCourseDetailsId,
+        setCurrentCourseDetailsId,
       }}
     >
       {children}
