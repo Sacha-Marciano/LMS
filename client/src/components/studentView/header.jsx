@@ -2,6 +2,7 @@
 
 //React
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 // Contexts
@@ -19,6 +20,8 @@ import { GraduationCap, TvMinimalPlay } from "lucide-react";
 
 //
 const StudentHeader = () => {
+  const navigate = useNavigate();
+
   const { resetCredentials } = useContext(AuthContext);
 
   const handleLogout = () => {
@@ -36,6 +39,7 @@ const StudentHeader = () => {
         </Link>
         <div className="flex items-center space-x-1 ">
           <Button
+            onClick={() => navigate("/courses")}
             variant="ghost"
             className="text-[14px] md:text-[16px] font-medium"
           >

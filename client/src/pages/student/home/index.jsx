@@ -73,7 +73,10 @@ function StudentHomePage() {
           {studentCoursesList && studentCoursesList.length > 0 ? (
             studentCoursesList.map((course) => {
               return (
-                <div className=" border rounded-lg overflow-hidden shadow cursor-pointer">
+                <div
+                  key={course._id}
+                  className=" border rounded-lg overflow-hidden shadow cursor-pointer"
+                >
                   <img
                     src={course?.image}
                     width={300}

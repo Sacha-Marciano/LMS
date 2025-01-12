@@ -15,6 +15,7 @@ import AuthPage from "./pages/auth";
 // Components
 import ProtectedRoute from "./components/protectedRoute";
 import StudentView from "./components/studentView/commonLayout";
+import StudentCourseViewPage from "./pages/student/courses";
 
 function App() {
   // Context suscribe
@@ -83,6 +84,7 @@ function App() {
           {/* Displayed according to auth */}
           <Route path="" element={<StudentHomePage />} />
           <Route path="home" element={<StudentHomePage />} />
+          <Route path="courses" element={<StudentCourseViewPage />} />
         </Route>
         {/* All not-known routes */}
         <Route path="*" element={<NotFoundPage />} />

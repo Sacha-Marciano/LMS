@@ -97,9 +97,9 @@ export async function updateInstructorCourseService(id, formData) {
   return data;
 }
 
-// Get all courses from server
-export async function fetchStudentCourseListService() {
-  const { data } = await axiosInstance.get(`/student/course/get`);
+// Get all courses from server with filters
+export async function fetchStudentCourseListService(query) {
+  const { data } = await axiosInstance.get(`/student/course/get?${query}`);
 
   return data;
 }
