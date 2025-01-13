@@ -27,7 +27,7 @@ function InstructorDashboardPage() {
     useContext(InstructorContext);
 
   // Hooks
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState("courses");
 
   // Methods
   const handleLogout = () => {

@@ -62,10 +62,6 @@ export const languageOptions = [
   { id: "english", label: "English" },
   { id: "spanish", label: "Spanish" },
   { id: "french", label: "French" },
-  { id: "german", label: "German" },
-  { id: "chinese", label: "Chinese" },
-  { id: "japanese", label: "Japanese" },
-  { id: "korean", label: "Korean" },
   { id: "portuguese", label: "Portuguese" },
   { id: "arabic", label: "Arabic" },
   { id: "russian", label: "Russian" },
@@ -80,16 +76,16 @@ export const courseLevelOptions = [
 
 // Defines the select values to display
 export const courseCategories = [
-  { id: "web-development", label: "Web Development" },
-  { id: "backend-development", label: "Backend Development" },
-  { id: "data-science", label: "Data Science" },
-  { id: "machine-learning", label: "Machine Learning" },
-  { id: "artificial-intelligence", label: "Artificial Intelligence" },
-  { id: "cloud-computing", label: "Cloud Computing" },
-  { id: "cyber-security", label: "Cyber Security" },
-  { id: "mobile-development", label: "Mobile Development" },
-  { id: "game-development", label: "Game Development" },
-  { id: "software-engineering", label: "Software Engineering" },
+  { id: "personal-development", label: "Personal Development" },
+  { id: "mental-health", label: "Mental Health & Well Being" },
+  { id: "professional-skills", label: "Professional Skills" },
+  { id: "entrepreneurship", label: "Entrepreneurship" },
+  { id: "financial-literacy", label: "Financial Literacy" },
+  { id: "communication-skills", label: "Communication Skills" },
+  { id: "tech-skills", label: "Technology & Digital Skills" },
+  { id: "art-expression", label: "Creative Arts & Expression" },
+  { id: "health-fitness", label: "Health & Fitness" },
+  { id: "legal-rights", label: "Legal Awareness & Rights" },
 ];
 
 // Defines every input of the add course landing page form

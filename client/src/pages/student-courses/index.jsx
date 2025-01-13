@@ -35,7 +35,7 @@ const StudentCoursesPage = () => {
         {studentBoughCoursesList && studentBoughCoursesList.length > 0 ? (
           studentBoughCoursesList.map((course) => {
             return (
-              <Card key={course.id} className=" flex flex-col">
+              <Card key={course._id} className=" flex flex-col">
                 <CardContent className=" p-4 flex-grow">
                   <img
                     src={course?.courseImage}

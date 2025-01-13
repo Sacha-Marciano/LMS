@@ -85,7 +85,7 @@ const checkBoughtCourseInfo = async (req, res) => {
     });
 
     const checkBoughtCourse =
-      studentCourses.courses.findIndex((item) => item.courseId === id) > -1;
+      studentCourses?.courses.findIndex((item) => item.courseId === id) > -1;
 
     return res.status(200).json({
       success: true,
