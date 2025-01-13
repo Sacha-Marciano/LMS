@@ -117,11 +117,16 @@ export async function createPaymentService(formData) {
   return data;
 }
 
-export async function captureAndFinalizePaymentService(formData) {
-  const { data } = await axiosInstance.post(
-    `/student/order/finalize`,
-    formData
-  );
+export async function captureAndFinalizePaymentService(
+  paymentId,
+  payerId,
+  orderId
+) {
+  const { data } = await axiosInstance.post(`/student/order/finalize`, {
+    paymentId,
+    payerId,
+    orderId,
+  });
 
   return data;
 }

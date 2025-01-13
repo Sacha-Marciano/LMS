@@ -25,7 +25,7 @@ export default function AuthProvider({ children }) {
   const [signInFormData, setSignInFormData] = useState(initialSignInFormData);
   const [signUpFormData, setSignUpFormData] = useState(initialSignUpFormData);
   const [auth, setAuth] = useState({
-    authenticate: false,
+    authenticate: true,
     user: null,
   });
   const [loading, setLoading] = useState(true);
