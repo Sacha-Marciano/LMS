@@ -119,7 +119,7 @@ const StudentCourseViewPage = () => {
 
   useEffect(() => {
     return sessionStorage.removeItem("filters");
-  });
+  }, []);
 
   return (
     <div className="container mx-auto p-4">
