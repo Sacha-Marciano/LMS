@@ -47,7 +47,7 @@ export default function AuthProvider({ children }) {
     evt.preventDefault();
     const data = await loginService(signInFormData);
 
-    // If credeentials are valid, create a token 
+    // If credeentials are valid, create a token
     // and store it in sessions storage
     if (data.success) {
       sessionStorage.setItem(
@@ -78,6 +78,7 @@ export default function AuthProvider({ children }) {
           authenticate: true,
           user: data.data.user,
         });
+
         setLoading(false);
       } else {
         setAuth({
@@ -98,7 +99,7 @@ export default function AuthProvider({ children }) {
     }
   }
 
-  // Log out 
+  // Log out
   function resetCredentials() {
     setAuth({
       authenticate: false,
@@ -106,7 +107,7 @@ export default function AuthProvider({ children }) {
     });
   }
 
-  // When mounting for first time check token 
+  // When mounting for first time check token
   useEffect(() => {
     checkAuth();
     setLoading(false);

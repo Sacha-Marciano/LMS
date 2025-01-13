@@ -48,7 +48,7 @@ const createOrder = async (req, res) => {
               },
             ],
           },
-          ammount: {
+          amount: {
             currency: "USD",
             total: coursePricing.toFixed(2),
           },
@@ -85,7 +85,7 @@ const createOrder = async (req, res) => {
         await newCourseOrder.save();
 
         const approveUrl = paymentInfo.links.find(
-          (link) => link.rel === "aproval_url"
+          (link) => link.rel == "approval_url"
         ).href;
 
         res.status(201).json({

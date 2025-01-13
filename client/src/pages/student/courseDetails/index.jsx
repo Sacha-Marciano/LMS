@@ -3,7 +3,10 @@ import { CardContent, CardHeader, CardTitle, Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import VideoPlayer from "@/components/videoPlayer";
 import { StudentContext } from "@/context/student-context";
-import { fetchStudentCourseDetailsService } from "@/services";
+import {
+  createPaymentService,
+  fetchStudentCourseDetailsService,
+} from "@/services";
 import { CheckCircle, Globe, Lock, PlayCircle } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
@@ -11,15 +14,22 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { AuthContext } from "@/context/auth-context";
+
 const StudentCourseDetailsPage = () => {
+  // Hooks
+  const [displayFreePreview, setDisplayFreePreview] = useState(null);
+  const [showFreePreviewDialog, setShowFreePreviewDialog] = useState(false);
+  const [approvalUrl, setApprovalUrl] = useState("");
+  // Router hooks
+  const { id } = useParams();
+  const location = useLocation();
+
+  // Context subscription
   const {
     studentCourseDetails,
     setStudentCourseDetails,
@@ -28,12 +38,7 @@ const StudentCourseDetailsPage = () => {
     loadingState,
     setLoadingState,
   } = useContext(StudentContext);
-
-  const [displayFreePreview, setDisplayFreePreview] = useState(null);
-  const [showFreePreviewDialog, setShowFreePreviewDialog] = useState(false);
-  const { id } = useParams();
-
-  const location = useLocation();
+  const { auth } = useContext(AuthContext);
 
   // constants
 
@@ -61,6 +66,38 @@ const StudentCourseDetailsPage = () => {
     setDisplayFreePreview(currentVideoInfo?.videoUrl);
   };
 
+  const handleCreatePayment = async () => {
+    const paymentPayload = {
+      userId: auth?.user?._id,
+      userName: auth?.user?.userName,
+      userEmail: auth?.user?.userEmail,
+      orderStatus: "pending",
+      paymentMethod: "paypal",
+      paymentStatus: "initiated",
+      orderDate: new Date(),
+      paymentId: "",
+      payerId: "",
+      instructorId: studentCourseDetails?.instructorId,
+      instructorName: studentCourseDetails?.instructorName,
+      courseImage: studentCourseDetails?.image,
+      courseTitle: studentCourseDetails?.title,
+      courseId: studentCourseDetails?._id,
+      coursePricing: studentCourseDetails?.pricing,
+    };
+
+    const response = await createPaymentService(paymentPayload);
+
+    if (response.success) {
+      sessionStorage.setItem(
+        "currentOrderId",
+        JSON.stringify(response?.data?.orderId)
+      );
+      setApprovalUrl(response?.data?.approveUrl);
+    }
+  };
+
+  // Use effect with dependencies
+
   useEffect(() => {
     if (displayFreePreview !== null) {
       setShowFreePreviewDialog(true);
@@ -84,9 +121,17 @@ const StudentCourseDetailsPage = () => {
     }
   }, [location.pathname]);
 
+  // If payment is done redirect to approvalUrl
+  if (approvalUrl !== "") {
+    window.location.href = approvalUrl;
+  }
+
+  // On loading don't render the page
   if (loadingState) {
     return <Skeleton />;
   }
+
+  // After loading
   return (
     <div className="mx-auto p-4">
       <div className="bg-gray-900 text-white p-8 rounded-t-lg">
@@ -188,7 +233,9 @@ const StudentCourseDetailsPage = () => {
                   {studentCourseDetails?.pricing}$
                 </span>
               </div>
-              <Button className="w-full"> Buy Now</Button>
+              <Button onClick={handleCreatePayment} className="w-full">
+                Buy Now
+              </Button>
             </CardContent>
           </Card>
         </aside>
@@ -214,8 +261,9 @@ const StudentCourseDetailsPage = () => {
           <div className=" flex flex-col gap-2">
             {studentCourseDetails?.curriculum
               ?.filter((item) => item.freePreview)
-              .map((filtered) => (
+              .map((filtered, index) => (
                 <p
+                  key={index}
                   onClick={() => handleSetFreePreview(filtered)}
                   className=" cursor-pointer text-[16px] font-medium"
                 >
