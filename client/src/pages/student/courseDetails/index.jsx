@@ -25,6 +25,7 @@ const StudentCourseDetailsPage = () => {
   const [displayFreePreview, setDisplayFreePreview] = useState(null);
   const [showFreePreviewDialog, setShowFreePreviewDialog] = useState(false);
   const [approvalUrl, setApprovalUrl] = useState("");
+
   // Router hooks
   const { id } = useParams();
   const location = useLocation();
@@ -105,14 +106,16 @@ const StudentCourseDetailsPage = () => {
   }, [displayFreePreview]);
 
   useEffect(() => {
+    if (id) {
+      setCurrentCourseDetailsId(id);
+    }
+  }, [id]);
+
+  useEffect(() => {
     if (currentCourseDetailsId !== null) {
       getStudentCourseDetails();
     }
   }, [currentCourseDetailsId]);
-
-  useEffect(() => {
-    if (id) setCurrentCourseDetailsId(id);
-  }, [id]);
 
   useEffect(() => {
     if (!location.pathname.includes("/course/details")) {
@@ -121,14 +124,14 @@ const StudentCourseDetailsPage = () => {
     }
   }, [location.pathname]);
 
-  // If payment is done redirect to approvalUrl
-  if (approvalUrl !== "") {
-    window.location.href = approvalUrl;
-  }
-
   // On loading don't render the page
   if (loadingState) {
     return <Skeleton />;
+  }
+
+  // If payment is done redirect to approvalUrl
+  if (approvalUrl !== "") {
+    window.location.href = approvalUrl;
   }
 
   // After loading

@@ -19,6 +19,7 @@ import StudentCourseViewPage from "./pages/student/courses";
 import StudentCourseDetailsPage from "./pages/student/courseDetails";
 import PaypalReturnPaymentPage from "./pages/student/paymentReturn";
 import StudentCoursesPage from "./pages/student-courses";
+import StudentCourseProgressPage from "./pages/course-progress";
 
 function App() {
   // Context suscribe
@@ -93,6 +94,10 @@ function App() {
         />
         <Route path="payment-return" element={<PaypalReturnPaymentPage />} />
         <Route path="student-courses" element={<StudentCoursesPage />} />
+        <Route
+          path="course-progress/:id"
+          element={<StudentCourseProgressPage />}
+        />
       </Route>
       {/* All not-known routes */}
       <Route path="*" element={<NotFoundPage />} />

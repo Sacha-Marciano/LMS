@@ -11,8 +11,12 @@ import {
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { filterOptions, sortOptions } from "@/config";
+import { AuthContext } from "@/context/auth-context";
 import { StudentContext } from "@/context/student-context";
-import { fetchStudentCourseListService } from "@/services";
+import {
+  checkBoughtCourseService,
+  fetchStudentCourseListService,
+} from "@/services";
 import { ArrowUpDownIcon } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -24,6 +28,7 @@ const StudentCourseViewPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Context subscription
+  const { auth } = useContext(AuthContext);
   const {
     studentCoursesList,
     setStudentCoursesList,
@@ -79,6 +84,21 @@ const StudentCourseViewPage = () => {
     }
 
     return queryParams.join("&");
+  };
+
+  const handleCourseNavigate = async (currentCourseId) => {
+    const response = await checkBoughtCourseService(
+      currentCourseId,
+      auth?.user?._id
+    );
+
+    if (response?.success) {
+      if (response?.data) {
+        navigate(`/course-progress/${currentCourseId}`);
+      } else {
+        navigate(`/course/details/${currentCourseId}`);
+      }
+    }
   };
 
   useEffect(() => {
@@ -176,7 +196,7 @@ const StudentCourseViewPage = () => {
               studentCoursesList.map((item) => {
                 return (
                   <Card
-                    onClick={() => navigate(`/course/details/${item?._id}`)}
+                    onClick={() => handleCourseNavigate(item?._id)}
                     className="cursor-pointer"
                     key={item?._id}
                   >

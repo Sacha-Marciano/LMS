@@ -105,8 +105,18 @@ export async function fetchStudentCourseListService(query) {
 }
 
 // Fetch a specific course details (student view) by ID
-export async function fetchStudentCourseDetailsService(id) {
-  const { data } = await axiosInstance.get(`/student/course/get/details/${id}`);
+export async function fetchStudentCourseDetailsService(courseId) {
+  const { data } = await axiosInstance.get(
+    `/student/course/get/details/${courseId}`
+  );
+
+  return data;
+}
+
+export async function checkBoughtCourseService(courseId, studentId) {
+  const { data } = await axiosInstance.get(
+    `/student/course/purchase-info/${courseId}/${studentId}`
+  );
 
   return data;
 }

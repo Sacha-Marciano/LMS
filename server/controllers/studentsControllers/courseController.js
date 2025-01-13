@@ -1,4 +1,5 @@
 const Course = require("../../models/Course");
+const StudentCourses = require("../../models/StudentCourses");
 
 const getAllStudentCourses = async (req, res) => {
   try {
@@ -61,7 +62,11 @@ const getStudentCourseDetails = async (req, res) => {
         data: null,
       });
     }
-    return res.status(200).json({ success: true, data: courseDetails });
+
+    return res.status(200).json({
+      success: true,
+      data: courseDetails,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -71,4 +76,32 @@ const getStudentCourseDetails = async (req, res) => {
   }
 };
 
-module.exports = { getAllStudentCourses, getStudentCourseDetails };
+const checkBoughtCourseInfo = async (req, res) => {
+  try {
+    const { id, studentId } = req.params;
+
+    const studentCourses = await StudentCourses.findOne({
+      userId: studentId,
+    });
+
+    const checkBoughtCourse =
+      studentCourses.courses.findIndex((item) => item.courseId === id) > -1;
+
+    return res.status(200).json({
+      success: true,
+      data: checkBoughtCourse,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      success: false,
+      message: "Some error occured",
+    });
+  }
+};
+
+module.exports = {
+  getAllStudentCourses,
+  getStudentCourseDetails,
+  checkBoughtCourseInfo,
+};

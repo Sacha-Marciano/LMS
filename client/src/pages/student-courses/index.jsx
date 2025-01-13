@@ -5,11 +5,14 @@ import { StudentContext } from "@/context/student-context";
 import { fetchStudentBoughtCoursesService } from "@/services";
 import { Video } from "lucide-react";
 import React, { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const StudentCoursesPage = () => {
   const { auth } = useContext(AuthContext);
   const { studentBoughCoursesList, setStudentBoughCoursesList } =
     useContext(StudentContext);
+
+  const navigate = useNavigate();
 
   const fetchStudentBoughtCourses = async () => {
     const response = await fetchStudentBoughtCoursesService(auth?.user?._id);
@@ -45,7 +48,12 @@ const StudentCoursesPage = () => {
                   </p>
                 </CardContent>
                 <CardFooter>
-                  <Button className=" flex-1">
+                  <Button
+                    onClick={() =>
+                      navigate(`/course-progress/${course?.courseId}`)
+                    }
+                    className=" flex-1"
+                  >
                     <Video className=" mr-2 h-4 w-4" />
                     Start Watching
                   </Button>
