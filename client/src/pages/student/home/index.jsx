@@ -3,9 +3,11 @@
 
 //React
 import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Contexts
 import { StudentContext } from "@/context/student-context";
+import { AuthContext } from "@/context/auth-context";
 
 //Components
 import banner from "/Banner.png";
@@ -17,17 +19,52 @@ import { Button } from "@/components/ui/button";
 
 // Initial Config data
 import { courseCategories } from "@/config";
-import { fetchStudentCourseListService } from "@/services";
+import {
+  checkBoughtCourseService,
+  fetchStudentCourseListService,
+} from "@/services";
 
 function StudentHomePage() {
+  // Router hooks
+  const navigate = useNavigate();
+  // Context subscription
   const { studentCoursesList, setStudentCoursesList } =
     useContext(StudentContext);
+  const { auth } = useContext(AuthContext);
 
+  // Methods
   const getAllStudentCourses = async () => {
     const response = await fetchStudentCourseListService();
     if (response?.success) {
       setStudentCoursesList(response?.data);
     }
+  };
+
+  const handleCourseNavigate = async (currentCourseId) => {
+    const response = await checkBoughtCourseService(
+      currentCourseId,
+      auth?.user?._id
+    );
+
+    if (response?.success) {
+      if (response?.data) {
+        navigate(`/course-progress/${currentCourseId}`);
+      } else {
+        navigate(`/course/details/${currentCourseId}`);
+      }
+    }
+  };
+
+  const handleNavigateCategory = (categoryId) => {
+    sessionStorage.removeItem("filters");
+
+    const currentFilter = {
+      category: [categoryId],
+    };
+
+    sessionStorage.setItem("filters", JSON.stringify(currentFilter));
+
+    navigate("/courses");
   };
 
   useEffect(() => {
@@ -60,6 +97,7 @@ function StudentHomePage() {
                 variant="outline"
                 className="justify-start"
                 key={category.id}
+                onClick={() => handleNavigateCategory(category.id)}
               >
                 {category.label}
               </Button>
@@ -75,6 +113,7 @@ function StudentHomePage() {
               return (
                 <div
                   key={course._id}
+                  onClick={() => handleCourseNavigate(course?._id)}
                   className=" border rounded-lg overflow-hidden shadow cursor-pointer"
                 >
                   <img

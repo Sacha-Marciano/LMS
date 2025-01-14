@@ -2,15 +2,19 @@
 // The Outlet component renders the proper child page depending on user location
 
 //React
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 // Components
 import StudentHeader from "./header";
 
 function StudentView() {
+  const location = useLocation();
   return (
     <div>
-      <StudentHeader />
+      {!location.pathname.includes("course-progress") ? (
+        <StudentHeader />
+      ) : null}
+
       <Outlet />
     </div>
   );

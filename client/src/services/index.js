@@ -156,3 +156,21 @@ export async function fetchCurrentCourseProgressService(userId, courseId) {
 
   return data;
 }
+
+export async function markLectureViewedService(userId, courseId, lectureId) {
+  const { data } = await axiosInstance.post(
+    `/student/course-progress/mark-lecture-viewed`,
+    { userId, courseId, lectureId }
+  );
+
+  return data;
+}
+
+export async function resetProgressService(userId, courseId) {
+  const { data } = await axiosInstance.post(
+    `/student/course-progress/reset-progress`,
+    { userId, courseId }
+  );
+
+  return data;
+}

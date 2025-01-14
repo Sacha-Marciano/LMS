@@ -27,7 +27,7 @@ function InstructorDashboardPage() {
     useContext(InstructorContext);
 
   // Hooks
-  const [activeTab, setActiveTab] = useState("courses");
+  const [activeTab, setActiveTab] = useState("dashboard");
 
   // Methods
   const handleLogout = () => {
@@ -52,7 +52,7 @@ function InstructorDashboardPage() {
       icon: BarChart,
       label: "Dashboard",
       value: "dashboard",
-      component: <InstructorDashboard />,
+      component: <InstructorDashboard coursesList={instructorCourseList} />,
     },
     {
       icon: Book,
@@ -70,7 +70,7 @@ function InstructorDashboardPage() {
 
   return (
     <div className="flex h-full min-h-screen bg-gray-100">
-      <aside className="w-64 bg-white shadow-md hidden md:block">
+      <aside className="w-64 bg-white shadow-md  md:block">
         <div className="p-4">
           <h2 className="text-2xl font-bold mb-4">Admin View</h2>
           <nav>
