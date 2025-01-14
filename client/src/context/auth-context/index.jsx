@@ -25,7 +25,7 @@ export default function AuthProvider({ children }) {
   const [signInFormData, setSignInFormData] = useState(initialSignInFormData);
   const [signUpFormData, setSignUpFormData] = useState(initialSignUpFormData);
   const [auth, setAuth] = useState({
-    authenticate: true,
+    authenticate: false,
     user: null,
   });
   const [loading, setLoading] = useState(true);
@@ -110,7 +110,6 @@ export default function AuthProvider({ children }) {
   // When mounting for first time check token
   useEffect(() => {
     checkAuth();
-    setLoading(false);
   }, []);
 
   // Wrap all children of this components in a context provider

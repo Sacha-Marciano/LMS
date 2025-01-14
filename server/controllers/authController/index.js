@@ -39,8 +39,12 @@ const loginUser = async (req, res) => {
   const { userEmail, password } = req.body;
 
   const checkUser = await User.findOne({ userEmail });
+
   // Both email and password are checked
-  const checkPassword = await bcrypt.compare(password, checkUser.password);
+  let checkPassword;
+  if (checkUser) {
+    checkPassword = bcrypt.compare(password, checkUser.password);
+  }
 
   if (!checkUser || !checkPassword) {
     return res.status(401).json({
