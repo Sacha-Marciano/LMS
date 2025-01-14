@@ -39,5 +39,6 @@ Create a .env file with the following :
  - CLOUDINARY_API_SECRET=`your cloudinary secret key`
  - PAYPAL_CLIENT_ID=`your paypal client id`
  - PAYPAL_SECRET_ID=`your paypal secret key`
+
 Open two terminals and cd to /client and /server
 Run npm run dev on both terminals
